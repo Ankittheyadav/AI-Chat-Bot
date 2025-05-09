@@ -1,0 +1,90 @@
+/* Basic styles for the navbar and map */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    color: #ffdd03;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distribute space between left, center, and right */
+    background-color: #2a2822;
+    padding: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Ensure the navbar is always on top */
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-left i {
+    font-size: 24px; /* Set icon size */
+    margin-right: 10px; /* Add space between icon and text */
+    color: #ffdd03; /* Set icon color */
+}
+
+.navbar-left span {
+    font-size: 18px; /* Set font size for the text */
+    color: #ffdd03; /* Text color */
+}
+
+.navbar-center {
+    position: absolute; /* Absolute positioning */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Offset by 50% of its own width */
+    text-align: center;
+}
+
+.navbar-center h1,
+.navbar-center p {
+    margin: 0;
+}
+
+#map {
+    height: (100% - 50px); /* Adjust for the navbar height */
+    width: 100%;
+    position: absolute;
+    top: 50px; /* Adjust for the navbar height */
+}
+
+.info-box {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: #2a2822;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* Stack elements on smaller screens */
+        padding: 10px;
+    }
+
+    .navbar-left, .navbar-center {
+        margin-bottom: 10px; /* Add space between stacked items */
+    }
+
+    .navbar-left span {
+        font-size: 16px; /* Reduce font size for smaller screens */
+    }
+
+    .navbar-center h1 {
+        font-size: 24px; /* Adjust heading size */
+    }
+
+    #map {
+        top: 60px; /* Adjust for new navbar height */
+    }
+}

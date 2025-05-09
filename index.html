@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Woloo Web Map</title>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkPmUz4UlRdzcKG9gniW9Qfrgzsjhnb_4&libraries=places&callback=initMap"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <i class="fas fa-user"></i>
+            <span>Welcome Guest!</span>
+        </div>
+        <div class="navbar-center">
+            <h1>Woloo</h1>
+            <p>Find Loo & More</p>
+        </div>
+    </div>
+
+    <!-- Map Section -->
+    <div id="map" style="height: 700px; width: 100%;"></div>
+
+    <!-- Info Box -->
+    <div class="info-box" id="info-box">
+        <p>Welcome to the Woloo Web Map!</p>
+        <p>Find the nearest Woloo washrooms around you.</p>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // Initialize the map
+        function initMap() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userLat = parseFloat(urlParams.get('user_lat')) || 19.0760; // Default to Mumbai if not provided
+            const userLon = parseFloat(urlParams.get('user_lon')) || 72.8777;
+            const userLocation = { lat: userLat, lng: userLon };
+    
+            // Create the map
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14,
+                center: userLocation,
+            });
+    
+            // Add a marker for the user's location
+            new google.maps.Marker({
+                position: userLocation,
+                map: map,
+                title: 'Your Location',
+                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            });
+    
+            // Get room coordinates from URL
+            const roomLat = parseFloat(urlParams.get('room_lat'));
+            const roomLon = parseFloat(urlParams.get('room_lon'));
+    
+            // Check if there's a visited room location
+            if (!isNaN(roomLat) && !isNaN(roomLon)) {
+                const roomLocation = { lat: roomLat, lng: roomLon };
+                new google.maps.Marker({
+                    position: roomLocation,
+                    map: map,
+                    title: 'Visited Woloo Washroom',
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+                });
+    
+                // Plot route to visited room
+                showRoute(userLocation, roomLocation, map);
+            }
+    
+            // Fetch washroom locations and add markers
+            fetchWashroomLocations(userLat, userLon).then(washroomLocations => {
+                washroomLocations.forEach(location => {
+                    const marker = new google.maps.Marker({
+                        position: { lat: location.latitude, lng: location.longitude },
+                        map: map,
+                        title: location.name,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                    });
+    
+                    // Add click event to marker
+                    marker.addListener('click', () => {
+                        const roomCoordinates = `${location.latitude},${location.longitude}`;
+                        const roomLink = `http://16.170.255.109/?user_lat=${userLat}&user_lon=${userLon}&rooms=${roomCoordinates}`;
+                        window.open(roomLink, '_blank'); // Open link in new tab
+                    });
+                });
+            });
+        }
+    
+        // Call initMap when window loads
+        window.onload = initMap;
+    </script>
+    
+    
+    
+    
+</body>
+</html>
