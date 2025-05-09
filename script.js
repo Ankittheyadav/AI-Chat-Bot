@@ -1,5 +1,5 @@
 // Replace this with your Google Maps API key
-const apiKey = 'AIzaSyCkPmUz4UlRdzcKG9gniW9Qfrgzsjhnb_4'; // Keep this secure
+const apiKey = 'API_KEY'; // Keep this secure
 
 // Default user location (can be changed dynamically)
 const userLocation = { lat: 19.126575, lng: 72.844345 }; // Mumbai coordinates as default
